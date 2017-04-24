@@ -1,9 +1,11 @@
 <p align="center">
 <b><a href="#introduction">Introduction</a></b>
 |
+<b><a href="#data">Data</a></b>
+|
 <b><a href="#filters">Filters</a></b>
 |
-<b><a href="#todo">Todo</a></b>
+<b><a href="#acknowledgements">Acknowledgements</a></b>
 </p>
 
 <a href="https://github.com/agarwalt/satimage">
@@ -18,6 +20,21 @@ This repository accompanies the manuscript "Predicting Poverty and Developmental
 
 1. Predict, using a multi-task fully convolutional deep neural network, three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
 2. Predict, using a simple four-layer fully-connected neural network, the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
+
+
+#### Data
+
+We obtained the Census of India (2011) data from these websites: 
+
+1. Primary Census Abstract Data Tables: http://censusindia.gov.in/pca/pcadata/pca.html
+2. Percentage of Households to Total Households by Amenities and Assets: http://www.censusindia.gov.in/2011census/HLO/HL_PCA/Houselisting-housing-HLPCA.html
+3. Socio-Economic and Caste Census: http://www.secc.gov.in/statewiseEmploymentAndIncomeReport?reportType=Employment%20and%20Income
+
+We utilized Google's Geocoding API (https://developers.google.com/maps/documentation/geocoding/) to obtain coordinates of the center of a region from its address in the census data.  
+
+Further, we used Google Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to extract 1920x1920 satellite images for the villages at the "16" zoom level.
+
+We provide a small subset of our dataset in this repository to test both models. (**Todo**)
 
 #### Filters
 
@@ -57,6 +74,6 @@ In contrast to the activations for shared layers' filters, the activations for t
 </div>
 <br>
 
-#### Todo
+#### Acknowledgements
 
-Add code for running sample data through the models.
+The authors are grateful to NVIDIA Corporation for donating the TITAN X GPUs used for this research.
