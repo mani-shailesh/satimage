@@ -18,8 +18,8 @@
 
 This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks: 
 
-1. Predict, using a multi-task fully convolutional deep neural network, three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
-2. Predict, using a simple four-layer fully-connected neural network, the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
+1. [<a href="models/developmental/model.png">PNG</a>, <a href="models/developmental/best_model_architecture.json">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0">Weights</a>] Predict, using a multi-task fully convolutional deep neural network, three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
+2. [<a href="models/income_poverty/model.png">PNG</a>, <a href="models/income_poverty/best_model_architecture.json">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0">Weights</a>] Predict, using a simple four-layer fully-connected neural network, the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
 
 
 #### Data
@@ -35,6 +35,7 @@ We utilized Google's Geocoding API (https://developers.google.com/maps/documenta
 Further, we used Google Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to extract 1920x1920 satellite images for the villages at the "16" zoom level.
 
 We provide a small subset of our dataset in this repository to test both models. (**Todo**)
+
 
 #### Filters
 
@@ -73,6 +74,7 @@ In contrast to the activations for shared layers' filters, the activations for t
 	<img src="filter_responses/task_specific_3.png">
 </div>
 <br>
+
 
 #### Acknowledgements
 
