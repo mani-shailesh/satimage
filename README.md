@@ -1,7 +1,7 @@
 <p align="center">
 <b><a href="#introduction">Introduction</a></b>
 |
-<b><a href="#filter%20responses">Filter Responses</a></b>
+<b><a href="#filters">Filters</a></b>
 |
 <b><a href="#todo">Todo</a></b>
 </p>
@@ -19,7 +19,7 @@ This repository accompanies the manuscript "Predicting Poverty and Developmental
 1. Predict, using a multi-task fully convolutional deep neural network, three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
 2. Predict, using a simple four-layer fully-connected neural network, the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
 
-#### Filter Responses
+#### Filters
 
 We provide filter responses for our first (multi-task) model.
 
