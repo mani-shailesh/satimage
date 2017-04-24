@@ -1,6 +1,6 @@
 <a href="https://github.com/agarwalt/satimage">
 <div align="center">
-	<img src="readme_images/header.png">
+	<img src="readme_images/header_img.png">
 </div>
 </a><br>
 
