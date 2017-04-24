@@ -18,17 +18,17 @@
 
 This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks: 
 
-1. Predict, using a multi-task fully convolutional deep neural network (<a href="models/developmental/model.png">PNG</a>, <a href="models/developmental/best_model_architecture.json">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0">Weights</a>), three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
-2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty/model.png">PNG</a>, <a href="models/income_poverty/best_model_architecture.json">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
+1. Predict, using a multi-task fully convolutional deep neural network (<a href="models/developmental/model.png" target="_blank">PNG</a>, <a href="models/developmental/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0" target="_blank">Weights</a>), three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
+2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty/model.png" target="_blank">PNG</a>, <a href="models/income_poverty/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
 
 
 #### Data
 
 We obtained the Census of India (2011) data from these websites: 
 
-1. Primary Census Abstract Data Tables: http://censusindia.gov.in/pca/pcadata/pca.html
-2. Percentage of Households to Total Households by Amenities and Assets: http://www.censusindia.gov.in/2011census/HLO/HL_PCA/Houselisting-housing-HLPCA.html
-3. Socio-Economic and Caste Census: http://www.secc.gov.in/statewiseEmploymentAndIncomeReport?reportType=Employment%20and%20Income
+1. Primary Census Abstract Data Tables: <a href="http://censusindia.gov.in/pca/pcadata/pca.html" target="_blank">http://censusindia.gov.in/pca/pcadata/pca.html</a>
+2. Percentage of Households to Total Households by Amenities and Assets: <a href="http://www.censusindia.gov.in/2011census/HLO/HL_PCA/Houselisting-housing-HLPCA.html" target="_blank">http://www.censusindia.gov.in/2011census/HLO/HL_PCA/Houselisting-housing-HLPCA.html</a>
+3. Socio-Economic and Caste Census: <a href="http://www.secc.gov.in/statewiseEmploymentAndIncomeReport?reportType=Employment%20and%20Income" target="_blank">http://www.secc.gov.in/statewiseEmploymentAndIncomeReport?reportType=Employment%20and%20Income</a>
 
 We utilized Google's Geocoding API (https://developers.google.com/maps/documentation/geocoding/) to obtain coordinates of the center of a region from its address in the census data.  
 
