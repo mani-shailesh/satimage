@@ -4,8 +4,6 @@
 </div>
 </a><br>
 
-# SatImage
-
 This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks: 
 
 1. Predict, using a multi-task fully convolutional deep neural network, three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
