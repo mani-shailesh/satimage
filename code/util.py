@@ -1,4 +1,5 @@
 import matplotlib.cm as cm
+import keras.backend as K
 import numpy as np
 import numpy.ma as ma
 import pylab as pl
@@ -62,3 +63,32 @@ def make_mosaic(imgs, nrows, ncols, border=1):
         mosaic[row * paddedh:row * paddedh + imshape[0],
         col * paddedw:col * paddedw + imshape[1]] = imgs[i]
     return mosaic
+
+    
+# -----------------------------------------------------------------------------
+
+# https://blog.keras.io/
+# how-convolutional-neural-networks-see-the-world.html
+
+# http://ankivil.com/visualizing-deep-neural-networks-classes-and-features/
+
+# -----------------------------------------------------------------------------
+def deprocess_image(x, alter_dim=True):
+    """
+    Utility function to convert a tensor into a valid image
+    """
+    # normalize tensor: center on 0., ensure std is 0.1
+    x -= x.mean()
+    x /= (x.std() + 1e-5)
+    x *= 0.1
+
+    # clip to [0, 1]
+    x += 0.5
+    x = np.clip(x, 0, 1)
+
+    # convert to RGB array
+    x *= 255
+    if alter_dim and K.image_dim_ordering() == 'th':
+        x = x.transpose((1, 2, 0))
+    x = np.clip(x, 0, 255).astype('uint8')
+    return x
