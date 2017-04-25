@@ -49,9 +49,9 @@ def img_data_generator(file_paths, batch_size):
                 x_train = []
         if len(x_train) > 0:
             x_to_yield = np.array(x_train, dtype=np.float32)
-                if K.image_dim_ordering() == "th":
-                    x_to_yield = x_to_yield.transpose((0, 3, 1, 2))
-                yield x_to_yield
+            if K.image_dim_ordering() == "th":
+                x_to_yield = x_to_yield.transpose((0, 3, 1, 2))
+            yield x_to_yield
                 
 
 def generate_predictions(model, img_dir, out_filepath, batch_size=BATCH_SIZE):
@@ -63,27 +63,30 @@ def generate_predictions(model, img_dir, out_filepath, batch_size=BATCH_SIZE):
     :param batch_size: Batch size to be used for generating predictions
     """
     file_paths = [os.path.join(img_dir, f) for f in os.listdir(img_dir) if os.path.isfile(os.path.join(img_dir, f))]
-    steps = int(len(file_paths) / BATCH_SIZE)
-    if len(file_paths) % BATCH_SIZE > 0:
+    steps = int(len(file_paths) / batch_size)
+    if len(file_paths) % batch_size > 0:
         steps += 1
     data_generator_obj = img_data_generator(file_paths, batch_size)
     
     print("Generating predictions...")
     predictions = model.predict_generator(data_generator_obj,
-                                          steps=steps,
-                                          pickle_safe=True,
-                                          verbose=1)
+                                          val_samples=steps * batch_size,
+                                          pickle_safe=True)
     
     pd_dict = dict()
+    order = ['region_code']
     pd_dict['region_code'] = [os.path.split(f)[1].split('.')[0] for f in file_paths]
     for ii in range(len(predictions)):
         predictions[ii] = np.array(predictions[ii], dtype=np.float32)
 
         for idx in range(predictions[ii].shape[-1]):
             pd_dict[str(ii) + "_" + str(idx)] = np.transpose(predictions[ii])[idx]
-
+            order.append(str(ii) + "_" + str(idx))
+            
     compare = pd.DataFrame(data=pd_dict)
-    compare.to_csv(out_filepath)
+    
+    compare = compare[order]
+    compare.to_csv(out_filepath, index=False)
     print("Done")
 
     
