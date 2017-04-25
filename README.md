@@ -19,7 +19,8 @@
 This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks: 
 
 1. Predict, using a multi-task fully convolutional deep neural network (<a href="models/developmental/model.png" target="_blank">PNG</a>, <a href="models/developmental/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0" target="_blank">Weights</a>), three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
-2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty/model.png" target="_blank">PNG</a>, <a href="models/income_poverty/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
+2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_pd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_pd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
+2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_cd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_cd/best_model_architecture.json" target="_blank">JSON</a>, <a href="" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the actual developmental parameter values.
 
 
 #### Data
@@ -34,7 +35,7 @@ We utilized Google's Geocoding API (https://developers.google.com/maps/documenta
 
 Further, we used Google Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to extract 1920x1920 satellite images for the villages at the "16" zoom level.
 
-We provide a small subset of our dataset in this repository to test both models. (**Todo**)
+We provide a small subset of our dataset in this repository to test both models.
 
 
 #### Filters
