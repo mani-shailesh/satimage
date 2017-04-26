@@ -51,6 +51,10 @@ git clone "https://github.com/agarwalt/satimage.git"
 cd satimage
 ```
 
+Next, install the required python packages: 
+```bash
+pip install -r requirements.txt
+```
 
 ##### Predicting developmental parameters
 
@@ -68,9 +72,11 @@ cd satimage
    satimage.generate_predictions(model, '../images', '../data/predicted_developmental.csv')
    ```
    
-   Here, ```../images``` is the directory where the satellite images are placed. 
+   Here, `../images` is the directory where the satellite images are placed. 
    
    The predictions of developmental parameters for regions whose images were downloaded will be written to `data/predicted_developmental.csv`.
+   
+   Information about headers of the data files is available in `data/developmental_header_detail.txt`.
  
 ##### Visualizing filter responses
 
@@ -87,7 +93,7 @@ satimage.show_filter_responses(model, layer_index, input_img_path, save_dir, fil
 
 A copy of the filter responses will be saved in `save_dir`.
 
-Vary the `layer_index`, `filter_index` and `input_img_path` variables to see responses of filters in different layers. For layer and filter indices, refer to the PNG file depicting the model's architecture in the ```models/developmental``` folder.
+Vary the `layer_index`, `filter_index` and `input_img_path` variables to see responses of filters in different layers. For layer and filter indices, refer to the PNG file depicting the model's architecture in the `models/developmental` folder.
 
 ##### Predicting income level and poverty
 
@@ -107,12 +113,15 @@ Vary the `layer_index`, `filter_index` and `input_img_path` variables to see res
    ```
    
    The predictions of income levels using predicted developmental parameters will be written to `data/pd_tehsil_income.csv`. The predictions of income levels using actual values of the developmental parameters will be written to `data/cd_tehsil_income.csv`.
+   
+   Information about headers of the data files is available in `data/income_header_detail.txt`.
 
 6. To compare the predicted income levels above against ground truth values, and to calculate the accuracy of povery prediction, use:
    ```python
    secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/pd_tehsil_income.csv')  # For model trained on predicted data, model P.D.
    secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/cd_tehsil_income.csv')  # For model trained on census data, model C.D.
    ```
+
 
 #### Filter Responses
 
