@@ -57,8 +57,8 @@ def generate_predictions(model, img_dir, out_filepath, batch_size=BATCH_SIZE):
                                           pickle_safe=True)
     
     pd_dict = dict()
-    order = ['region_code']
-    pd_dict['region_code'] = [os.path.split(f)[1].split('.')[0] for f in file_paths]
+    order = ['village_code']
+    pd_dict['village_code'] = [os.path.split(f)[1].split('.')[0] for f in file_paths]
     for ii in range(len(predictions)):
         predictions[ii] = np.array(predictions[ii], dtype=np.float32)
 

@@ -108,18 +108,18 @@ Vary the `layer_index`, `filter_index` and `input_img_path` variables to see res
 5. Generate and save predictions of income levels from the developmental parameters (generated in the previous section) using:
    ```python
    import secc
-   secc.generate_predictions(model_pd, '../data/predicted_developmental.csv', '../data/region_info.csv', '../data/pd_tehsil_income.csv')
-   secc.generate_predictions(model_cd, '../data/data_developmental.csv', '../data/region_info.csv', '../data/cd_tehsil_income.csv')
+   secc.generate_predictions(model_pd, '../data/predicted_developmental.csv', '../data/region_info.csv', '../data/pd_subdistrict_income.csv')
+   secc.generate_predictions(model_cd, '../data/data_developmental.csv', '../data/region_info.csv', '../data/cd_subdistrict_income.csv')
    ```
    
-   The predictions of income levels using predicted developmental parameters will be written to `data/pd_tehsil_income.csv`. The predictions of income levels using actual values of the developmental parameters will be written to `data/cd_tehsil_income.csv`.
+   The predictions of income levels using predicted developmental parameters will be written to `data/pd_subdistrict_income.csv`. The predictions of income levels using actual values of the developmental parameters will be written to `data/cd_subdistrict_income.csv`.
    
    Information about headers of the data files is available in `data/income_header_detail.txt`.
 
 6. To compare the predicted income levels above against ground truth values, and to calculate the accuracy of povery prediction, use:
    ```python
-   secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/pd_tehsil_income.csv')  # For model trained on predicted data, model P.D.
-   secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/cd_tehsil_income.csv')  # For model trained on census data, model C.D.
+   secc.compare_income_predictions('../data/data_subdistrict_income.csv', '../data/pd_subdistrict_income.csv')  # For model trained on predicted data, model P.D.
+   secc.compare_income_predictions('../data/data_subdistrict_income.csv', '../data/cd_subdistrict_income.csv')  # For model trained on census data, model C.D.
    ```
 
 

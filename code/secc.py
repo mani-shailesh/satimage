@@ -7,64 +7,64 @@ from scipy.stats import pearsonr
 BATCH_SIZE = 50
 
 
-def generate_predictions(model, developmental_filepath, region_info_filepath, out_filepath, batch_size=BATCH_SIZE):
+def generate_predictions(model, developmental_filepath, village_info_filepath, out_filepath, batch_size=BATCH_SIZE):
     """
     Generate predictions of income level for each sub-district and save the results at specified path.
     :param model: pre-trained 'Model' object
-    :param developmental_filepath: path of file containing values of developmental parameters for each region
-    :param region_info_filepath: path of file containing information (including 'tehsil_code' and 'num_households') 
-    for each region
+    :param developmental_filepath: path of file containing values of developmental parameters for each village
+    :param village_info_filepath: path of file containing information (including 'subdistrict_code' and 'num_households') 
+    for each village
     :param out_filepath: path of file to write the predictions
     :param batch_size: Batch size to be used for generating predictions
     """
     print("Reading developmental parameter values...")
-    region_data_dict = {}
+    village_data_dict = {}
     data = pd.read_csv(developmental_filepath)
     header_list = list(data)[1:]
     for ii, row in data.iterrows():
-        region_code = row['region_code']
-        region_data_dict[region_code] = {}
+        village_code = row['village_code']
+        village_data_dict[village_code] = {}
         for header in header_list:
             param_idx, column_idx = int(header.split('_')[0]), int(header.split('_')[1])
-            if param_idx not in region_data_dict[region_code]:
-                region_data_dict[region_code][param_idx] = {}
-            region_data_dict[region_code][param_idx][column_idx] = row[header]
+            if param_idx not in village_data_dict[village_code]:
+                village_data_dict[village_code][param_idx] = {}
+            village_data_dict[village_code][param_idx][column_idx] = row[header]
     print("Done.")
 
     print("Aggregating values at sub-district level...")
-    tehsil_data_dict = {}
-    data = pd.read_csv(region_info_filepath)
+    subdistrict_data_dict = {}
+    data = pd.read_csv(village_info_filepath)
     for ii, row in data.iterrows():
-        region_code = row['region_code']
-        tehsil_code = row['tehsil_code']
+        village_code = row['village_code']
+        subdistrict_code = row['subdistrict_code']
         num_households = row['num_households']
-        if region_code in region_data_dict:
-            if tehsil_code not in tehsil_data_dict:
-                tehsil_data_dict[tehsil_code] = {
+        if village_code in village_data_dict:
+            if subdistrict_code not in subdistrict_data_dict:
+                subdistrict_data_dict[subdistrict_code] = {
                     'num_households': 0,
                 }
-            region_dict = region_data_dict[region_code]
-            tehsil_data_dict[tehsil_code]['num_households'] += num_households
-            for param_idx in region_dict:
-                if param_idx not in tehsil_data_dict[tehsil_code]:
-                    tehsil_data_dict[tehsil_code][param_idx] = {}
-                for column_idx in region_dict[param_idx]:
-                    if column_idx not in tehsil_data_dict[tehsil_code][param_idx]:
-                        tehsil_data_dict[tehsil_code][param_idx][column_idx] = 0
-                    tehsil_data_dict[tehsil_code][param_idx][column_idx] += \
-                        region_dict[param_idx][column_idx] * num_households
+            village_dict = village_data_dict[village_code]
+            subdistrict_data_dict[subdistrict_code]['num_households'] += num_households
+            for param_idx in village_dict:
+                if param_idx not in subdistrict_data_dict[subdistrict_code]:
+                    subdistrict_data_dict[subdistrict_code][param_idx] = {}
+                for column_idx in village_dict[param_idx]:
+                    if column_idx not in subdistrict_data_dict[subdistrict_code][param_idx]:
+                        subdistrict_data_dict[subdistrict_code][param_idx][column_idx] = 0
+                    subdistrict_data_dict[subdistrict_code][param_idx][column_idx] += \
+                        village_dict[param_idx][column_idx] * num_households
 
     data_matrix = []
-    tehsil_code_list = []
-    for tehsil_code in tehsil_data_dict:
+    subdistrict_code_list = []
+    for subdistrict_code in subdistrict_data_dict:
         data_row = []
-        tehsil_dict = tehsil_data_dict[tehsil_code]
-        num_households = tehsil_dict.pop('num_households')
-        for param_idx in sorted(tehsil_dict.keys()):
-            for column_idx in sorted(tehsil_dict[param_idx].keys()):
-                data_row.append(tehsil_dict[param_idx][column_idx] / num_households)
+        subdistrict_dict = subdistrict_data_dict[subdistrict_code]
+        num_households = subdistrict_dict.pop('num_households')
+        for param_idx in sorted(subdistrict_dict.keys()):
+            for column_idx in sorted(subdistrict_dict[param_idx].keys()):
+                data_row.append(subdistrict_dict[param_idx][column_idx] / num_households)
         data_matrix.append(data_row)
-        tehsil_code_list.append(tehsil_code)
+        subdistrict_code_list.append(subdistrict_code)
 
     data_matrix = np.array(data_matrix)
     print("Done.")
@@ -76,8 +76,8 @@ def generate_predictions(model, developmental_filepath, region_info_filepath, ou
     print("Writing predictions to file...")
     param_idx = 0
     pd_dict = dict()
-    order = ['tehsil_code']
-    pd_dict['tehsil_code'] = tehsil_code_list
+    order = ['subdistrict_code']
+    pd_dict['subdistrict_code'] = subdistrict_code_list
     predictions = np.array(predictions, dtype=np.float32)
     for column_idx in range(predictions.shape[-1]):
         pd_dict[str(param_idx) + "_" + str(column_idx)] = np.transpose(predictions)[column_idx]
@@ -97,17 +97,17 @@ def compare_income_predictions(original_filepath, predicted_filepath):
     :param predicted_filepath:  Path of the file containing predicted income level values
     :return: 
     """
-    original_tehsil_dict = {}
+    original_subdistrict_dict = {}
     original_values = []
     predicted_values = []
     data_original = pd.read_csv(original_filepath)
     data_predicted = pd.read_csv(predicted_filepath)
     header_list = list(data_predicted)[1:]
     for ii, row in data_original.iterrows():
-        original_tehsil_dict[row['tehsil_code']] = [row[header] for header in header_list]
+        original_subdistrict_dict[row['subdistrict_code']] = [row[header] for header in header_list]
     for ii, row in data_predicted.iterrows():
         predicted_values.append([row[header] for header in header_list])
-        original_values.append(original_tehsil_dict[row['tehsil_code']])
+        original_values.append(original_subdistrict_dict[row['subdistrict_code']])
     original_values = np.array(original_values)
     predicted_values = np.array(predicted_values)
 

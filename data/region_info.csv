@@ -1,4 +1,4 @@
-region_code,region_name,tehsil_code,num_households,centre_lat,centre_long,ne_lat, ne_long,sw_lat,sw_long
+village_code,village_name,subdistrict_code,num_households,centre_lat,centre_long,ne_lat, ne_long,sw_lat,sw_long
 143688,Dharmawat Khera,822,114.0,26.7045146,81.0133491,26.7116301,81.0180099,26.6979201,81.01033
 143703,Bheelam Pur,822,160.0,26.6124501,80.9442732,26.62024,80.9509,26.60703,80.93861
 122957,Larauta,757,416.0,27.7296032,78.0509282,27.7382401,78.0637001,27.7179201,78.03275
