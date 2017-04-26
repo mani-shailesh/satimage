@@ -3,7 +3,7 @@
 |
 <b><a href="#data">Data</a></b>
 |
-<b><a href="#data">Instructions</a></b>
+<b><a href="#instructions">Instructions</a></b>
 |
 <b><a href="#filters">Filters</a></b>
 |
