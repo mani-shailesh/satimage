@@ -69,6 +69,28 @@ We provide a small subset of our dataset in this repository to test both models.
     satimage.show_filter_responses(model, layer_index, input_img_path, save_dir, filter_index)
     ```
     Vary the `layer_index`, `filter_index` and `input_img_path` to see the filters at specific layer for specific image. A copy of the filter responses will also be saved at `save_dir`.
+    
+###### Predicting income level and poverty:
+1.  Download the model weights from https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0 and https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0 and place the downloaded file in `models/income_poverty_pd` and `models/income_poverty_cd` respectively.
+3. `cd code` and launch the interactive python shell using `ipython` or any other python notebook of your choice.  
+4. Load the pre-trained income level predictions models using: 
+    ```python
+    import util
+    model_pd = util.restore_model('../models/income_poverty_pd/best_model_architecture.json', '../models/income_poverty_pd/best_model_weights.h5')
+    model_cd = util.restore_model('../models/income_poverty_cd/best_model_architecture.json', '../models/income_poverty_cd/best_model_weights.h5')
+    ``` 
+5. Generate and save predictions of income level from the developmental parameters (assuming that they have already been predicted and saved) using:
+    ```python
+    import secc
+    secc.generate_predictions(model_pd, '../data/predicted_developmental.csv', '../data/region_info.csv', '../data/pd_tehsil_income.csv')
+    secc.generate_predictions(model_cd, '../data/data_developmental.csv', '../data/region_info.csv', '../data/cd_tehsil_income.csv')
+    ```
+    The file `data/pd_tehsil_income.csv` should now contain the predictions of income levels using predicted developmental parameters while the file `data/cd_tehsil_income.csv` should contain the predictions of income levels using actual values of the developmental parameters.
+6. To compare these predicted results against the actual ones and also to see the accuracy of povery prediction using these predictions use the following snippet:
+    ```python
+    secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/cd_tehsil_income.csv')  # For model trained on actual data
+    secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/pd_tehsil_income.csv')  # For model trained on predicted data
+    ```
 
 #### Filters
 
