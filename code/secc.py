@@ -51,7 +51,8 @@ def generate_predictions(model, developmental_filepath, region_info_filepath, ou
                 for column_idx in region_dict[param_idx]:
                     if column_idx not in tehsil_data_dict[tehsil_code][param_idx]:
                         tehsil_data_dict[tehsil_code][param_idx][column_idx] = 0
-                    tehsil_data_dict[tehsil_code][param_idx][column_idx] += region_dict[param_idx][column_idx]
+                    tehsil_data_dict[tehsil_code][param_idx][column_idx] += \
+                        region_dict[param_idx][column_idx] * num_households
 
     data_matrix = []
     tehsil_code_list = []
@@ -96,15 +97,17 @@ def compare_income_predictions(original_filepath, predicted_filepath):
     :param predicted_filepath:  Path of the file containing predicted income level values
     :return: 
     """
+    original_tehsil_dict = {}
     original_values = []
     predicted_values = []
     data_original = pd.read_csv(original_filepath)
     data_predicted = pd.read_csv(predicted_filepath)
     header_list = list(data_predicted)[1:]
     for ii, row in data_original.iterrows():
-        original_values.append([row[header] for header in header_list])
+        original_tehsil_dict[row['tehsil_code']] = [row[header] for header in header_list]
     for ii, row in data_predicted.iterrows():
         predicted_values.append([row[header] for header in header_list])
+        original_values.append(original_tehsil_dict[row['tehsil_code']])
     original_values = np.array(original_values)
     predicted_values = np.array(predicted_values)
 
