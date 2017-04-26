@@ -1,11 +1,11 @@
 <p align="center">
 <b><a href="#introduction">Introduction</a></b>
 |
-<b><a href="#data">Data</a></b>
+<b><a href="#data-sources">Data Sources</a></b>
 |
-<b><a href="#instructions">Instructions</a></b>
+<b><a href="#code">Code</a></b>
 |
-<b><a href="#filters">Filters</a></b>
+<b><a href="#filter-responses">Filter Responses</a></b>
 |
 <b><a href="#acknowledgements">Acknowledgements</a></b>
 </p>
@@ -18,14 +18,14 @@
 
 #### Introduction
 
-This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks: 
+This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks:
 
-1. Predict, using a multi-task fully convolutional deep neural network (<a href="models/developmental/model.png" target="_blank">PNG</a>, <a href="models/developmental/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0" target="_blank">Weights</a>), three developmental parameters - the main material of the roof, source of lighting and source of drinking water - from satellite imagery.
-2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_pd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_pd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first model.
-2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_cd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_cd/best_model_architecture.json" target="_blank">JSON</a>, <a href="" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the actual developmental parameter values.
+1. Predict, using a multi-task fully convolutional deep neural network (<a href="models/developmental/model.png" target="_blank">PNG</a>, <a href="models/developmental/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0" target="_blank">Weights</a>), three developmental parameters -- the main material of the roof, source of lighting and source of drinking water -- from satellite imagery.
+2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_pd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_pd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first (multi-task) model -- model P.D., trained on predicted data.
+2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_cd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_cd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/jk6xhloa6946y9s/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels using the actual developmental parameter values -- model C.D., trained on census data.
 
 
-#### Data
+#### Data Sources
 
 We obtained the Census of India (2011) data from these websites: 
 
@@ -37,62 +37,84 @@ We utilized Google's Geocoding API (https://developers.google.com/maps/documenta
 
 Further, we used Google Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to extract 1920x1920 satellite images for the villages at the "16" zoom level.
 
-We provide a small subset of our dataset in this repository to test both models.
+We provide a small subset of our dataset in this repository to test all three models.
 
 
-#### Instructions
+#### Code
 
-###### Predicting developmental parameters:
-1. <a href="data/region_info.csv" target="_blank">data/region_info.csv</a> contains the centre latitudes and longitudes for all the regions in shared dataset. Use Google Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to extract 1920x1920 satellite images for these regions at the 16 zoom level. Make sure that the name of each image is `region_code.png` e.g. for region with `region_code = 12345`, name of the image must be `12345.png`
-2. Download the model weights from https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0 and place the downloaded file in `models/developmental`
-3. `cd code` and launch the interactive python shell using `ipython` or any other python notebook of your choice.  
-4. Load the pre-trained multi-task fully-convolutional model using: 
-    ```python
-    import util
-    model = util.restore_model('../models/developmental/best_model_architecture.json', '../models/developmental/best_model_weights.h5')
-    ``` 
-5. Generate and save predictions of developmental parameters from the downloaded images (assuming that they are saved in `images` directory) using:
-    ```python
-    import satimage
-    satimage.generate_predictions(model, '../images', '../data/predicted_developmental.csv')
-    ```
-    The file `data/predicted_developmental.csv` should now contain the predictions of developmental parameters for those regions whose images were provided.
-    
-###### Visualizing filter responses:
-1.  Load the model using steps `1-4` listed earlier and then to see and save filter responses for a given image at a specified layer use the following snippet:
-    ```python
-    import satimage
-    layer_index = 19
-    filter_index = None
-    input_img_path = '../images/12345.png'
-    save_dir = '../images'
-    satimage.show_filter_responses(model, layer_index, input_img_path, save_dir, filter_index)
-    ```
-    Vary the `layer_index`, `filter_index` and `input_img_path` to see the filters at specific layer for specific image. A copy of the filter responses will also be saved at `save_dir`.
-    
-###### Predicting income level and poverty:
-1.  Download the model weights from https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0 and https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0 and place the downloaded file in `models/income_poverty_pd` and `models/income_poverty_cd` respectively.
-3. `cd code` and launch the interactive python shell using `ipython` or any other python notebook of your choice.  
-4. Load the pre-trained income level predictions models using: 
-    ```python
-    import util
-    model_pd = util.restore_model('../models/income_poverty_pd/best_model_architecture.json', '../models/income_poverty_pd/best_model_weights.h5')
-    model_cd = util.restore_model('../models/income_poverty_cd/best_model_architecture.json', '../models/income_poverty_cd/best_model_weights.h5')
-    ``` 
-5. Generate and save predictions of income level from the developmental parameters (assuming that they have already been predicted and saved) using:
-    ```python
-    import secc
-    secc.generate_predictions(model_pd, '../data/predicted_developmental.csv', '../data/region_info.csv', '../data/pd_tehsil_income.csv')
-    secc.generate_predictions(model_cd, '../data/data_developmental.csv', '../data/region_info.csv', '../data/cd_tehsil_income.csv')
-    ```
-    The file `data/pd_tehsil_income.csv` should now contain the predictions of income levels using predicted developmental parameters while the file `data/cd_tehsil_income.csv` should contain the predictions of income levels using actual values of the developmental parameters.
-6. To compare these predicted results against the actual ones and also to see the accuracy of povery prediction using these predictions use the following snippet:
-    ```python
-    secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/cd_tehsil_income.csv')  # For model trained on actual data
-    secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/pd_tehsil_income.csv')  # For model trained on predicted data
-    ```
+Use these commands to generate predictions from the three models mentioned earlier and calculate correlation, accuracy, precision and recall on the dataset provided in this repository.
 
-#### Filters
+First, clone the repository or download it as a <a href="https://github.com/agarwalt/satimage/archive/master.zip" target="_blank">zip file</a>. To clone:
+
+```bash
+git clone "https://github.com/agarwalt/satimage.git"
+cd satimage
+```
+
+
+##### Predicting developmental parameters
+
+1. The file <a href="data/region_info.csv" target="_blank">data/region_info.csv</a> contains the centre latitudes and longitudes for some regions from our complete dataset. Use Google's Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to download 1920x1920 satellite images for these regions at the 16 zoom level. The name of each image should be `<region_code>.png`. For example, for the region with `region_code = 12345`, the name of the corresponding image file should be `12345.png`.
+2. Download the multi-task model's <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0" target="_blank">weights</a> and place the downloaded file in the `models/developmental` folder.
+3. Change the working directory (`cd code`) and launch an interactive python shell (e.g. `ipython`).
+4. Load the weights from the downloaded file: 
+   ```python
+   import util
+   model = util.restore_model('../models/developmental/best_model_architecture.json', '../models/developmental/best_model_weights.h5')
+   ``` 
+5. Next, generate and save predictions of developmental parameters from the downloaded images.
+   ```python
+   import satimage
+   satimage.generate_predictions(model, '../images', '../data/predicted_developmental.csv')
+   ```
+   
+   Here, ```../images``` is the directory where the satellite images are placed. 
+   
+   The predictions of developmental parameters for regions whose images were downloaded will be written to `data/predicted_developmental.csv`.
+ 
+##### Visualizing filter responses
+
+Load the multi-task model using steps `1-4`, as necessary, in the previous section. To see and save filter responses for a particular region and convolutional layer, execute:
+
+```python
+import satimage
+layer_index = 19
+filter_index = None
+input_img_path = '../images/12345.png'
+save_dir = '../images'
+satimage.show_filter_responses(model, layer_index, input_img_path, save_dir, filter_index)
+```
+
+A copy of the filter responses will be saved in `save_dir`.
+
+Vary the `layer_index`, `filter_index` and `input_img_path` variables to see responses of filters in different layers. For layer and filter indices, refer to the PNG file depicting the model's architecture in the ```models/developmental``` folder.
+
+##### Predicting income level and poverty
+
+1. Download model weights, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">model P.D.</a> and <a href="https://www.dropbox.com/s/jk6xhloa6946y9s/best_model_weights.h5?dl=0" target="_blank">model C.D.</a>, and place the downloaded files in `models/income_poverty_pd` and `models/income_poverty_cd` respectively.
+3. Change the working directory (`cd code`) and launch an interactive python shell (e.g. `ipython`).
+4. Load the models's weights: 
+   ```python
+   import util
+   model_pd = util.restore_model('../models/income_poverty_pd/best_model_architecture.json', '../models/income_poverty_pd/best_model_weights.h5')
+   model_cd = util.restore_model('../models/income_poverty_cd/best_model_architecture.json', '../models/income_poverty_cd/best_model_weights.h5')
+   ``` 
+5. Generate and save predictions of income levels from the developmental parameters (generated in the previous section) using:
+   ```python
+   import secc
+   secc.generate_predictions(model_pd, '../data/predicted_developmental.csv', '../data/region_info.csv', '../data/pd_tehsil_income.csv')
+   secc.generate_predictions(model_cd, '../data/data_developmental.csv', '../data/region_info.csv', '../data/cd_tehsil_income.csv')
+   ```
+   
+   The predictions of income levels using predicted developmental parameters will be written to `data/pd_tehsil_income.csv`. The predictions of income levels using actual values of the developmental parameters will be written to `data/cd_tehsil_income.csv`.
+
+6. To compare the predicted income levels above against ground truth values, and to calculate the accuracy of povery prediction, use:
+   ```python
+   secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/pd_tehsil_income.csv')  # For model trained on predicted data, model P.D.
+   secc.compare_income_predictions('../data/data_tehsil_income.csv', '../data/cd_tehsil_income.csv')  # For model trained on census data, model C.D.
+   ```
+
+#### Filter Responses
 
 We provide filter responses for our first (multi-task) model.
 
