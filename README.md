@@ -3,6 +3,8 @@
 |
 <b><a href="#data">Data</a></b>
 |
+<b><a href="#data">Instructions</a></b>
+|
 <b><a href="#filters">Filters</a></b>
 |
 <b><a href="#acknowledgements">Acknowledgements</a></b>
@@ -37,6 +39,36 @@ Further, we used Google Static Maps API (https://developers.google.com/maps/docu
 
 We provide a small subset of our dataset in this repository to test both models.
 
+
+#### Instructions
+
+###### Predicting developmental parameters:
+1. <a href="data/region_info.csv" target="_blank">data/region_info.csv</a> contains the centre latitudes and longitudes for all the regions in shared dataset. Use Google Static Maps API (https://developers.google.com/maps/documentation/static-maps/) to extract 1920x1920 satellite images for these regions at the 16 zoom level. Make sure that the name of each image is `region_code.png` e.g. for region with `region_code = 12345`, name of the image must be `12345.png`
+2. Download the model weights from https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0 and place the downloaded file in `models/developmental`
+3. `cd code` and launch the interactive python shell using `ipython` or any other python notebook of your choice.  
+4. Load the pre-trained multi-task fully-convolutional model using: 
+    ```python
+    import util
+    model = util.restore_model('../models/developmental/best_model_architecture.json', '../models/developmental/best_model_weights.h5')
+    ``` 
+5. Generate and save predictions of developmental parameters from the downloaded images (assuming that they are saved in `images` directory) using:
+    ```python
+    import satimage
+    satimage.generate_predictions(model, '../images', '../data/predicted_developmental.csv')
+    ```
+    The file `data/predicted_developmental.csv` should now contain the predictions of developmental parameters for those regions whose images were provided.
+    
+###### Visualizing filter responses:
+1.  Load the model using steps `1-4` listed earlier and then to see and save filter responses for a given image at a specified layer use the following snippet:
+    ```python
+    import satimage
+    layer_index = 19
+    filter_index = None
+    input_img_path = '../images/12345.png'
+    save_dir = '../images'
+    satimage.show_filter_responses(model, layer_index, input_img_path, save_dir, filter_index)
+    ```
+    Vary the `layer_index`, `filter_index` and `input_img_path` to see the filters at specific layer for specific image. A copy of the filter responses will also be saved at `save_dir`.
 
 #### Filters
 
