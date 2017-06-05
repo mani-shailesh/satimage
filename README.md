@@ -3,6 +3,8 @@
 |
 <b><a href="#data-sources">Data Sources</a></b>
 |
+<b><a href="#sample-images">Sample Images</a></b>
+|
 <b><a href="#code">Code</a></b>
 |
 <b><a href="#filter-responses">Filter Responses</a></b>
@@ -39,6 +41,16 @@ Further, we used Google Static Maps API (https://developers.google.com/maps/docu
 
 We provide a small subset of our dataset in this repository to test all three models.
 
+#### Sample Images
+
+Sample satellite images of parts of six different regions are shown below. Labels indicate the percentage of households with a particular roof type, source of lighting or source of drinking water. The satellite images in the paper are scaled down to fit the paper width. Zooming to true size makes, roads, roof types and farms distinctly visible.
+
+<div align="center">
+	<img src="readme_images/sample_images.png">
+</div>
+<br>
+
+Developmental parameters are not only related to “direct” features such as roofs and settlements, but also to “indirect” features such as roads and farmlands. For instance, the presence of roads is correlated with high electrification.
 
 #### Code
 
