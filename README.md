@@ -9,6 +9,8 @@
 |
 <b><a href="#filter-responses">Filter Responses</a></b>
 |
+<b><a href="#learning-curve">Learning Curve</a></b>
+|
 <b><a href="#acknowledgements">Acknowledgements</a></b>
 </p>
 
@@ -150,6 +152,15 @@ Vary the `layer_index`, `filter_index` and `input_img_path` variables to see res
    secc.compare_income_predictions('../data/data_subdistrict_income.csv', '../data/pd_subdistrict_income.csv')  # For model trained on predicted data, model P.D.
    secc.compare_income_predictions('../data/data_subdistrict_income.csv', '../data/cd_subdistrict_income.csv')  # For model trained on census data, model C.D.
    ```
+
+#### Learning Curve
+
+The figure below shows the average training and validation loss for the three tasks in the multi-task model. The minimum validation loss occurs at the last step in the graph. Further training leads to overfitting.
+
+<div align="center">
+	<img src="readme_images/training_validation_error.png">
+</div>
+<br>
 
 #### Filter Responses
 
