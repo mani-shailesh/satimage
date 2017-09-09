@@ -23,8 +23,25 @@
 This repository accompanies the manuscript "Predicting Poverty and Developmental Statistics from Satellite Images using Multi-task Deep Learning" and contains the code and model weights for two prediction tasks:
 
 1. Predict, using a multi-task fully convolutional deep neural network (<a href="models/developmental/model.png" target="_blank">PNG</a>, <a href="models/developmental/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/187e6zp2or2s9ni/best_model_weights.h5?dl=0" target="_blank">Weights</a>), three developmental parameters -- the main material of the roof, source of lighting and source of drinking water -- from satellite imagery.
+
+	Following are the categories for each of the three tasks in the multi-task model. The multi-task model outputs 24 values (9 for roof type, 6 for source of lighting and 9 for source of drinking water) as three probability distributions, one distribution per task.
+
+	| # | Roof Type        			| Lighting Source           		| Drinking Water Source   	|
+	| - | --------------------------------- | ------------------------------------- | ----------------------------- |
+	| 1 | Grass/thatch/bamboo/wood/mud      | Electricity 				| Treated tap-water 		|
+	| 2 | Plastic/polythene      		| Kerosene 				| Untreated tap-water 		|
+	| 3 | Hand made tiles      		| Solar energy 				| Covered well 			|
+	| 4 | Machine made tiles      		| Other oil 				| Uncovered well 		|
+	| 5 | Burnt brick      			| Any other 				| Handpump	 		|
+	| 6 | Stone/slate      			| No lighting 				| Tubewell/borehole 		|
+	| 7 | G.I./metal/asbestos      		| 	 				| River/canal	 		|
+	| 8 | Concrete      			| 	 				| Tank/pond/lake 		|
+	| 9 | Any other material      		| 	 				| Other source	 		|
+	
+
 2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_pd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_pd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/ml3hkms3nlx0k0u/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels (a direct indicator of poverty) using the predicted developmental parameter outputs of the first (multi-task) model -- model P.D., trained on predicted data.
-2. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_cd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_cd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/jk6xhloa6946y9s/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels using the actual developmental parameter values -- model C.D., trained on census data.
+
+3. Predict, using a simple four-layer fully-connected neural network (<a href="models/income_poverty_cd/model.png" target="_blank">PNG</a>, <a href="models/income_poverty_cd/best_model_architecture.json" target="_blank">JSON</a>, <a href="https://www.dropbox.com/s/jk6xhloa6946y9s/best_model_weights.h5?dl=0" target="_blank">Weights</a>), the income levels using the actual developmental parameter values -- model C.D., trained on census data.
 
 
 #### Data Sources
@@ -133,7 +150,6 @@ Vary the `layer_index`, `filter_index` and `input_img_path` variables to see res
    secc.compare_income_predictions('../data/data_subdistrict_income.csv', '../data/pd_subdistrict_income.csv')  # For model trained on predicted data, model P.D.
    secc.compare_income_predictions('../data/data_subdistrict_income.csv', '../data/cd_subdistrict_income.csv')  # For model trained on census data, model C.D.
    ```
-
 
 #### Filter Responses
 
